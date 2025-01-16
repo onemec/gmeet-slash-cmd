@@ -1,12 +1,11 @@
-import * as qs from 'query-string'
+import querystring from 'query-string'
 import * as https from 'https'
-import * as url from 'url'
 import {
-  SlackUser,
   MessageBlock,
-  SlackMessage,
   QueryParams,
   ResponseType,
+  SlackMessage,
+  SlackUser,
 } from './types'
 
 export const createUser = (params: QueryParams): SlackUser => {
@@ -20,7 +19,7 @@ export const createUserFromState = (state: string): SlackUser => {
 }
 
 export const extractUser = (payload: string): SlackUser => {
-  const data: any = qs.parse(payload)
+  const data: any = querystring.parse(payload)
   return {
     id: data.user_id,
     team: data.team_id,
@@ -28,7 +27,7 @@ export const extractUser = (payload: string): SlackUser => {
 }
 
 export const extractResponseUrl = (payload: string): string => {
-  const { response_url }: any = qs.parse(payload)
+  const { response_url }: any = querystring.parse(payload)
   return response_url
 }
 
@@ -40,8 +39,9 @@ const convertToResponseType = (scope: Scope): ResponseType => {
       return 'in_channel'
     case 'me':
       return 'ephemeral'
+    default:
+      throw new Error(`Unsupported scope: ${scope}`)
   }
-  throw new Error(`Unsupported scope: ${scope}`)
 }
 
 const createBlock = (markdown: string): MessageBlock => {
@@ -74,11 +74,11 @@ export const replaceMessage = (resUrl: string, text: string) => {
     text,
   })
 
-  const parsedUrl = url.parse(resUrl)
+  const parsedUrl = new URL(resUrl)
   const options = {
     hostname: parsedUrl.hostname,
     port: 443,
-    path: parsedUrl.path,
+    path: `${parsedUrl.pathname}${parsedUrl.search}`,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

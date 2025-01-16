@@ -3,4 +3,6 @@
     "clientId": "GET YOUR CLIENT ID FROM GOOGLE API CONSOLE",
     "clientSecret": "GET YOUR CLIENT SECRET FROM GOOGLE API CONSOLE",
     "redirectUrl": "PUT CALLBACK URL OF YOUR APP"
+    "s3BucketName": "YOUR S3 BUCKET NAME",
+    "lambdaUrl": "YOUR LAMBDA FUNCTION URL",
 }

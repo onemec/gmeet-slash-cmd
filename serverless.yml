@@ -11,8 +11,8 @@ plugins:
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  region: ap-northeast-1
+  runtime: nodejs22.x
+  region: us-east-1
   profile: ${file(./config.json):profile}
   timeout: 15
   apiGateway:
@@ -22,6 +22,9 @@ provider:
     CLIENT_ID: ${file(./config.json):clientId}
     CLIENT_SECRET: ${file(./config.json):clientSecret}
     REDIRECT_URL: ${file(./config.json):redirectUrl}
+    AWS_REGION: ${self:provider.region}
+    S3_BUCKET_NAME: ${file(./config.json):s3BucketName}
+    LAMBDA_URL: ${file(./config.json):lambdaUrl}
 
 functions:
   auth:
